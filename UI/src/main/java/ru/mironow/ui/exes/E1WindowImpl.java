@@ -25,6 +25,10 @@ public class E1WindowImpl implements E1Window {
     @Value("${ui.exe1.height}")
     private int HEIGHT;
 
+    private final int heightTable = 400;
+    private final int tableCoordX = 300;
+    private final int tableCoordY = 80;
+
     private JFrame mainFrame;
 
     private ButtonGroup difucults;
@@ -79,7 +83,7 @@ public class E1WindowImpl implements E1Window {
         leftPanel.add(generateButton);
         leftPanel.add(execButton);
 
-        tableFromFields = new TableFromFields(350, 100, 100,2,2, true);
+        tableFromFields = new TableFromFields(tableCoordX, tableCoordY, heightTable,2,2, true);
 
         root.add(leftPanel);
         root.add(tableFromFields);
@@ -125,7 +129,7 @@ public class E1WindowImpl implements E1Window {
 
     @Override
     public void setCodeTable(int rows, int cols) {
-        tableFromFields = new TableFromFields(350, 100, 100,rows, cols, true);
+        tableFromFields.createNewStructure(tableCoordX, tableCoordY, heightTable,rows, cols, true);
     }
 
     @Override

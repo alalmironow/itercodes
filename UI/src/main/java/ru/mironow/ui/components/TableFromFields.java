@@ -16,11 +16,12 @@ public class TableFromFields extends JPanel {
     private int x;
     private int y;
 
-    public TableFromFields(int coordX, int coordY, int sizeField, int x, int y, boolean enabled) {
+    public TableFromFields(int coordX, int coordY, int size, int x, int y, boolean enabled) {
         this.x = x;
         this.y = y;
+        int sizeField = size/x;
         setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
-        setBounds(coordX, coordY,x*sizeField, y*sizeField);
+        setBounds(coordX, coordY,x*(sizeField + sizeField/5), y*(sizeField + sizeField/5));
         Font font = new Font("Arial",Font.BOLD,sizeField);
         textFields = new JTextField[x][y];
         for (int i = 0; i < x; i++) {
@@ -29,6 +30,24 @@ public class TableFromFields extends JPanel {
                 add(textFields[i][j]);
             }
         }
+    }
+
+    public void createNewStructure(int coordX, int coordY, int size, int x, int y, boolean enabled) {
+        this.x = x;
+        this.y = y;
+        int sizeField = size/x;
+        removeAll();
+        setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
+        setBounds(coordX, coordY,x*(sizeField + sizeField/5), x*(sizeField + sizeField/5));
+        Font font = new Font("Arial",Font.BOLD, sizeField);
+        textFields = new JTextField[x][y];
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                textFields[i][j] = generateCell(font, sizeField, enabled);
+                add(textFields[i][j]);
+            }
+        }
+        repaint();
     }
 
     /**

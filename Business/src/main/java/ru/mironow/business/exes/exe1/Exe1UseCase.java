@@ -1,4 +1,4 @@
-package ru.mironow.business.exe1;
+package ru.mironow.business.exes.exe1;
 
 import ru.mironow.exes.DificultExe;
 

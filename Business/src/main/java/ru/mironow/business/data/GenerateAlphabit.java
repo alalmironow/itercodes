@@ -1,4 +1,4 @@
-package ru.mironow.business.generatedata;
+package ru.mironow.business.data;
 
 import org.springframework.stereotype.Component;
 import ru.mironow.exes.DificultExe;
@@ -8,13 +8,18 @@ import java.util.*;
 @Component
 public class GenerateAlphabit {
 
+    private final ConvertUtils сonvertUtils;
+
     private final String data =
             "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
             "DFGIJLNQRSTUVWYZ" +
              "~!@#$%^&*(){}<>";
+
     private final Map<DificultExe, Integer> map;
 
-    public GenerateAlphabit() {
+    public GenerateAlphabit(ConvertUtils сonvertUtils) {
+        this.сonvertUtils = сonvertUtils;
+
         map = new HashMap<>();
         map.put(DificultExe.EASY, 3);
         map.put(DificultExe.MEDIUM, 5);
@@ -24,12 +29,27 @@ public class GenerateAlphabit {
     /**
      * Получение алфавита по сложности задачи
      * @param dificultExe сложность задачи
-     * @return алфавит
+     * @return алфавит с закодированными в биты данными
      */
-    public List<String> getAlphabit(DificultExe dificultExe) {
+    public HashMap<String, ArrayList<Boolean>> getAlphabit(DificultExe dificultExe) {
         ArrayList<String> letters = new ArrayList<>(Arrays.asList(data.split("")));
-        Collections.shuffle(letters);
-        return letters.subList(0, (int)Math.pow(2, map.get(dificultExe)));
+        ArrayList<String> resultLetters = new ArrayList<>();
+
+        for(String l : letters) {
+            if(l.trim().length() != 0) {
+                resultLetters.add(l);
+            }
+        }
+
+        HashMap<String, ArrayList<Boolean>> mapAlphabit = new HashMap<>();
+        Collections.shuffle(resultLetters);
+        List<String> lettersSub = resultLetters.subList(0, (int)Math.pow(2, map.get(dificultExe)));
+
+        for(int i = 0; i < lettersSub.size(); i++) {
+            mapAlphabit.put(lettersSub.get(i), сonvertUtils.convertToBitArray(i));
+        }
+
+        return mapAlphabit;
     }
 
     /**
