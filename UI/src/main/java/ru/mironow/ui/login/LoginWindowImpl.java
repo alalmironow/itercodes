@@ -76,12 +76,12 @@ public class LoginWindowImpl implements LoginWindow {
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         JPanel jPanel = new JPanel();
-        jPanel.setMaximumSize(new Dimension(200, 100));
+        jPanel.setMaximumSize(new Dimension(200, 150));
         jPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         jPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
         jPanel.setLayout(new GridLayout(3,1));
 
-        JLabel labelLoginField = new JLabel("Введите ваше ФИО");
+        JLabel labelLoginField = new JLabel("<html>Введите ваше ФИО<br>(через пробел, используя <br>только русские буквы)</html>");
         jPanel.add(labelLoginField);
 
         loginField = new JTextField("");

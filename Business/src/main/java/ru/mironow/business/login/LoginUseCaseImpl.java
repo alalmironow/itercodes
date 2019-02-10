@@ -70,6 +70,10 @@ public class LoginUseCaseImpl implements LoginUseCase {
             loginWindow.showError("Размер поля ФИО не должен превышать 100 символов");
             return;
         }
+        if(loginField.replaceAll("^[А-я]+\\s[А-я]+\\s[А-я]+$", "").length() != 0) {
+            loginWindow.showError("Введите ваше ФИО (через пробел, используя только русские буквы)");
+            return;
+        }
         loginWindow.setEnabled(false);
         Statistic statistic = null;
         try {

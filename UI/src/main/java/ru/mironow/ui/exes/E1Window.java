@@ -1,6 +1,6 @@
 package ru.mironow.ui.exes;
 
-import ru.mironow.statistics.Statistic;
+import ru.mironow.ui.components.TableFromFields;
 import ru.mironow.ui.events.EventWindow;
 
 /**
@@ -16,6 +16,13 @@ public interface E1Window extends ExeWindow {
      */
     void setEnabled(boolean enable);
 
+
+    /**
+     * Статус доступности для кнопки кодирования
+     * @param enable статус доступности
+     */
+    void setEnabledCodeButton(boolean enable);
+
     /**
      * клик по кнопке генеарции задачи
      * @param eventWindow событие при клике на кнопку
@@ -23,10 +30,10 @@ public interface E1Window extends ExeWindow {
     void clickByGenerateValue(EventWindow eventWindow);
 
     /**
-     * Получить номер выбранной сложности
-     * @return номер выбранной сложности
+     * клик по кнопке исполнения
+     * @param eventWindow события в окне
      */
-    Integer getNumberDifucult();
+    void clickByExecuteButton(EventWindow eventWindow);
 
     /**
      * установить текст задачи
@@ -42,8 +49,22 @@ public interface E1Window extends ExeWindow {
     void setCodeTable(int rows, int cols);
 
     /**
-     * Статус доступности для кнопки кодирования
-     * @param enable статус доступности
+     * Вернуть матрицу с данными
+     * @return матрица с заполненными пользователем данными
      */
-    void setEnabledCodeButton(boolean enable);
+    TableFromFields getTable();
+
+    /**
+     * вывести ошибку на экран
+     * @param message сообщение об ошибке
+     */
+    void showError(String message);
+
+    /**
+     * Вывод сообщения с полем для ввода
+     * @param message сообщение
+     * @param title заголовок
+     * @return строка введенная в поле ввода
+     */
+    String showInputDialog(String message, String title);
 } 

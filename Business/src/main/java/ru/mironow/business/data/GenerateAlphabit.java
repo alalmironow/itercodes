@@ -13,7 +13,7 @@ public class GenerateAlphabit {
     private final String data =
             "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
             "DFGIJLNQRSTUVWYZ" +
-             "~!@#$%^&*(){}<>";
+             "~!@#$%^&*(){}?>";
 
     private final Map<DificultExe, Integer> map;
 
@@ -31,7 +31,7 @@ public class GenerateAlphabit {
      * @param dificultExe сложность задачи
      * @return алфавит с закодированными в биты данными
      */
-    public HashMap<String, ArrayList<Boolean>> getAlphabit(DificultExe dificultExe) {
+    public Map<String, ArrayList<Boolean>> getAlphabit(DificultExe dificultExe) {
         ArrayList<String> letters = new ArrayList<>(Arrays.asList(data.split("")));
         ArrayList<String> resultLetters = new ArrayList<>();
 
@@ -41,12 +41,14 @@ public class GenerateAlphabit {
             }
         }
 
-        HashMap<String, ArrayList<Boolean>> mapAlphabit = new HashMap<>();
+        Map<String, ArrayList<Boolean>> mapAlphabit = new LinkedHashMap<>();
         Collections.shuffle(resultLetters);
         List<String> lettersSub = resultLetters.subList(0, (int)Math.pow(2, map.get(dificultExe)));
 
         for(int i = 0; i < lettersSub.size(); i++) {
-            mapAlphabit.put(lettersSub.get(i), сonvertUtils.convertToBitArray(i));
+            //System.out.println(lettersSub.get(i));
+            //System.out.println(сonvertUtils.convertToBitArray(i, map.get(dificultExe)));
+            mapAlphabit.put(lettersSub.get(i), сonvertUtils.convertToBitArray(i, map.get(dificultExe)));
         }
 
         return mapAlphabit;

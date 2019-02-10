@@ -1,6 +1,7 @@
 package ru.mironow.ui.exes;
 
 import org.springframework.beans.factory.annotation.Value;
+import ru.mironow.exes.DificultExe;
 import ru.mironow.statistics.Statistic;
 import ru.mironow.ui.components.TableFromFields;
 import ru.mironow.ui.events.EventWindow;
@@ -10,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Реализация интерфейса окна задачи 1
@@ -83,7 +86,7 @@ public class E1WindowImpl implements E1Window {
         leftPanel.add(generateButton);
         leftPanel.add(execButton);
 
-        tableFromFields = new TableFromFields(tableCoordX, tableCoordY, heightTable,2,2, true);
+        tableFromFields = new TableFromFields(tableCoordX, tableCoordY, heightTable,3,3, true);
 
         root.add(leftPanel);
         root.add(tableFromFields);
@@ -94,7 +97,26 @@ public class E1WindowImpl implements E1Window {
     @Override
     public void show(Statistic statistic) {
         mainFrame.setVisible(true);
+        execButton.setEnabled(false);
+        textExe.setText("");
+        setCodeTable(3,3);
         this.statistic = statistic;
+    }
+
+    @Override
+    public void dispose() {
+        mainFrame.dispose();
+    }
+
+    @Override
+    public void setOnCloseOperation(final EventWindow eventWindow) {
+        mainFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                eventWindow.action();
+                super.windowClosing(e);
+            }
+        });
     }
 
     @Override
@@ -118,8 +140,23 @@ public class E1WindowImpl implements E1Window {
     }
 
     @Override
+    public void clickByExecuteButton(final EventWindow eventWindow) {
+        execButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                eventWindow.action();
+            }
+        });
+    }
+
+    @Override
     public Integer getNumberDifucult() {
         return difucults.getSelection().getMnemonic();
+    }
+
+    @Override
+    public DificultExe getDificult() {
+        return DificultExe.valueOfNumber(getNumberDifucult());
     }
 
     @Override
@@ -135,5 +172,30 @@ public class E1WindowImpl implements E1Window {
     @Override
     public void setEnabledCodeButton(boolean enable) {
         execButton.setEnabled(enable);
+    }
+
+    @Override
+    public TableFromFields getTable() {
+        return tableFromFields;
+    }
+
+    @Override
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(mainFrame, message, "Внимание! Ошибка!", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public String showInputDialog(String message, String title) {
+        JPasswordField pf = new JPasswordField();
+        Object[] messageData = {message, pf};
+        int returnCode = JOptionPane.showConfirmDialog(mainFrame, messageData,
+                title,
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE);
+        String result = null;
+        if(returnCode == JOptionPane.OK_OPTION) {
+            result = pf.getText();;
+        }
+        return result;
     }
 }

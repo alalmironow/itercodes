@@ -1,5 +1,7 @@
 package ru.mironow.statistics;
 
+import java.io.IOException;
+
 /**
  * Сервис для загрузки статистики
  *
@@ -14,4 +16,11 @@ public interface StatisticService {
      * @return статистика
      */
     Statistic loadStatisticByUserName(String userName) throws NotLoadStatistic;
+
+    /**
+     * Сохранение статистики на сервере
+     * @param statistic статистика
+     * @param password пароль для сохранения статистики
+     */
+    void saveStatistic(Statistic statistic, String password) throws PasswordWrong, DontSaveStatistic;
 }
