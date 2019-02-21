@@ -1,7 +1,5 @@
 package ru.mironow.business.exes.exe1;
 
-import ru.mironow.exes.DificultExe;
-
 public interface Exe1UseCase {
 
     /**
@@ -12,5 +10,5 @@ public interface Exe1UseCase {
     /**
      * Генерация задания
      */
-    void addExe(DificultExe dificultExe);
+    void addExe();
 }

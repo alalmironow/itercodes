@@ -34,9 +34,7 @@ public class MenuExesWindowImpl implements MenuExecWindow {
     public void show(Statistic statistic) {
         this.statistic = statistic;
         for(int i = 0; i < buttons.size(); i++) {
-            if(i > statistic.getNumberLastExe()) {
-                buttons.get(i).setEnabled(false);
-            }
+            buttons.get(i).setEnabled(i <= statistic.getNumberLastExe());
         }
         mainFrame.setVisible(true);
     }
@@ -78,12 +76,12 @@ public class MenuExesWindowImpl implements MenuExecWindow {
 
         buttons = new ArrayList<>();
         JButton exeButton1 = new JButton("Кодирование");
-        //JButton exeButton2 = new JButton("<html><p align=\"center\">Декодирование с </br>одной ошибкой<p></html>");
+        JButton exeButton2 = new JButton("<html><p align=\"center\">Декодирование с </br>одной ошибкой<p></html>");
         buttons.add(exeButton1);
-        //buttons.add(exeButton2);
+        buttons.add(exeButton2);
 
         contentPanel.add(exeButton1);
-        //contentPanel.add(exeButton2);
+        contentPanel.add(exeButton2);
 
         mainFrame.getContentPane().add(contentPanel);
     }

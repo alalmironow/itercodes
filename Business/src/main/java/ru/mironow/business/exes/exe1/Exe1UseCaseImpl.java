@@ -39,51 +39,18 @@ public class Exe1UseCaseImpl implements Exe1UseCase {
             @Override
             public void action() {
                 e1Window.setEnabled(false);
-                DificultExe dificultExe = DificultExe.valueOfNumber(e1Window.getNumberDifucult());
-                addExe(dificultExe);
+                addExe();
                 e1Window.setEnabled(true);
             }
         });
+
         e1Window.clickByExecuteButton(new EventWindow() {
             @Override
             public void action() {
                 e1Window.setEnabled(false);
-                ArrayList<ArrayList<Boolean>> data;
                 try {
-                    data = e1Window.getTable().getData();
-                    if(checkExecution(data)) {
-                        e1Window.getStatistic().setNumberLastExe(1);
-                        e1Window.getStatistic().getDataStatistic().put(1, e1Window.getDificult());
-                        System.out.println(e1Window.getStatistic().getDataStatistic());
-                        while (true) {
-                            String password = e1Window.showInputDialog(
-                                    "<html>" + e1Window.getStatistic().getUserName()
-                                            + ", вы выполнили Задание 1!<br>"
-                                            + "Пригласите преподавателя для сохранения статистики<br>"
-                                            + "Введите пароль для сохранения данных на сервере:",
-                                    "ПОЗДРАВЛЯЕМ!!!"
-                            );
-                            if (password != null) {
-                                try {
-                                    statisticService.saveStatistic(e1Window.getStatistic(), password);
-                                    menuExecWindow.show(e1Window.getStatistic());
-                                    e1Window.setEnabled(true);
-                                    e1Window.dispose();
-                                    return;
-                                } catch (PasswordWrong passwordWrong) {
-                                    e1Window.showError("Неверный пароль!");
-                                } catch (DontSaveStatistic dontSaveStatistic) {
-                                    e1Window.showError("Невозможно сохранить статистику. Сервер не доступен!");
-                                    e1Window.dispose();
-                                    menuExecWindow.show(e1Window.getStatistic());
-                                    break;
-                                }
-                            } else {
-                                menuExecWindow.show(e1Window.getStatistic());
-                                e1Window.dispose();
-                                break;
-                            }
-                        }
+                    if(checkExecution()) {
+                        saveStatistic();
                     } else {
                         e1Window.showError("<html>Задание выполнено неверно!<br>Проверьте закодированное сообщение!");
                     }
@@ -93,6 +60,7 @@ public class Exe1UseCaseImpl implements Exe1UseCase {
                 e1Window.setEnabled(true);
             }
         });
+
         e1Window.setOnCloseOperation(new EventWindow() {
             @Override
             public void action() {
@@ -102,10 +70,10 @@ public class Exe1UseCaseImpl implements Exe1UseCase {
     }
 
     @Override
-    public void addExe(DificultExe dificultExe) {
+    public void addExe() {
+        DificultExe dificultExe = DificultExe.valueOfNumber(e1Window.getNumberDifucult());
         alphabit = generateAlphabit.getAlphabit(dificultExe);
-        ArrayList<String> keys = new ArrayList<>();
-        keys.addAll(alphabit.keySet());
+        ArrayList<String> keys = new ArrayList<>(alphabit.keySet());
         codeMessage = "";
         Random random = new Random();
         for(int i = 0; i < generateAlphabit.getCountBit(dificultExe); i++) {
@@ -188,10 +156,10 @@ public class Exe1UseCaseImpl implements Exe1UseCase {
 
     /**
      * Проверка выполнения задания по полученным из таблицы данным
-     * @param data данные из таблицы ввода
      * @return статус проверки значения
      */
-    private Boolean checkExecution(ArrayList<ArrayList<Boolean>> data) {
+    private Boolean checkExecution() throws Exception {
+        ArrayList<ArrayList<Boolean>> data = e1Window.getTable().getData();
         try {
             for (int i = 0; i < processExec.size(); i++) {
                 for (int j = 0; j < processExec.get(i).size(); j++) {
@@ -205,5 +173,42 @@ public class Exe1UseCaseImpl implements Exe1UseCase {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Сохранение статистики после успешного выполнения заданич
+     */
+    private void saveStatistic() {
+        e1Window.getStatistic().setNumberLastExe(1);
+        e1Window.getStatistic().getDataStatistic().put(1, e1Window.getDificult());
+        while (true) {
+            String password = e1Window.showInputDialog(
+                    "<html>" + e1Window.getStatistic().getUserName()
+                            + ", вы выполнили Задание 1!<br>"
+                            + "Пригласите преподавателя для сохранения статистики<br>"
+                            + "Введите пароль для сохранения данных на сервере:",
+                    "ПОЗДРАВЛЯЕМ!!!"
+            );
+            if (password != null) {
+                try {
+                    statisticService.saveStatistic(e1Window.getStatistic(), password);
+                    menuExecWindow.show(e1Window.getStatistic());
+                    e1Window.setEnabled(true);
+                    e1Window.dispose();
+                    return;
+                } catch (PasswordWrong passwordWrong) {
+                    e1Window.showError("Неверный пароль!");
+                } catch (DontSaveStatistic dontSaveStatistic) {
+                    e1Window.showError("Невозможно сохранить статистику. Сервер не доступен!");
+                    e1Window.dispose();
+                    menuExecWindow.show(e1Window.getStatistic());
+                    break;
+                }
+            } else {
+                menuExecWindow.show(e1Window.getStatistic());
+                e1Window.dispose();
+                break;
+            }
+        }
     }
 }

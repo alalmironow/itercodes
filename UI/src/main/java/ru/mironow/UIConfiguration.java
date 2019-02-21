@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import ru.mironow.ui.exes.E1Window;
 import ru.mironow.ui.exes.E1WindowImpl;
+import ru.mironow.ui.exes.E2Window;
+import ru.mironow.ui.exes.E2WindowImpl;
 import ru.mironow.ui.login.LoginWindow;
 import ru.mironow.ui.login.LoginWindowImpl;
 import ru.mironow.ui.menuexes.MenuExecWindow;
@@ -32,5 +34,10 @@ public class UIConfiguration {
     @Bean
     public E1Window e1Window() {
         return new E1WindowImpl();
+    }
+
+    @Bean
+    public E2Window e2Window() {
+        return new E2WindowImpl();
     }
 } 

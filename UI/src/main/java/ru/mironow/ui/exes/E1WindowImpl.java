@@ -99,7 +99,6 @@ public class E1WindowImpl implements E1Window {
         mainFrame.setVisible(true);
         execButton.setEnabled(false);
         textExe.setText("");
-        setCodeTable(3,3);
         this.statistic = statistic;
     }
 
